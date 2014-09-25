@@ -19,16 +19,15 @@
 
 	$price = 24.70;
 
-	$quantity = $_GET["quantity"];
+	$quantity = isset($_GET["quantity"]) ? $_GET["quantity"] : 1;
+	$paid = ($_GET["paid"] == "1") ? "Paid" : "Unpaid";
 
-	$country = $_GET["country"];
+	$country = isset($_GET["country"]) ? $_GET["country"] : "AU";
 	$code = $_GET["postalCode"];
 	$suburb = $_GET["suburb"];
 
-	$shippingType = "Domestic";
-	if ($country != "AU"){
-		$shippingType = "International";
-	}
+	$shippingType = ($country == "AU") ? "Domestic" : "International";
+
 
 	$request = array(
 		'anythings' => array(
@@ -100,12 +99,16 @@
 		// 'promotionCode' => 'A0001', 
 		'general' => array(
 			'goodsValue' => $price,
-			'termsOfTrade' => "Delivered Duty Unpaid",
+			'termsOfTrade' => "Delivered Duty " . $paid,
 			'goodsCurrency' => 'AUD'
 		)
 	);
 					
 	$response = $obj_tem->getQuotesByRequest($request,$username,$password,$endpoint);
+
+	if ($_GET["debug"]){
+		var_dump($response);
+	}
 
 	$quotes = array();
 
