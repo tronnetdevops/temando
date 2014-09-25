@@ -18,7 +18,12 @@
 	$endpoint = 'http://api.temando.com/schema/2009_06/server.wsdl';
 
 	$price = 24.70;
-	$quantity = 1;
+
+	$quantity = $_GET["quantity"];
+
+	$country = $_GET["country"];
+	$code = $_GET["countryCode"];
+	$suburb = $_GET["suburb"];
 
 	$request = array(
 		'anythings' => array(
@@ -47,6 +52,7 @@
 			'originCode' => '4069',
 			'originSuburb' => 'KENMORE', 
 			'originIs' => 'Business', 
+
 			'originBusDock' => 'N', 
 			'originBusUnattended' => 'N', 
 			'originBusForklift' => 'N', 
@@ -57,9 +63,11 @@
 			'originBusHeavyLift' => 'N', 
 			'originBusContainerSwingLifter' => 'N', 
 			'originBusTailgateLifter' => 'N', 
-			'destinationCountry' => 'AU', 
-			'destinationCode' => '4000', 
-			'destinationSuburb' => 'BRISBANE', 
+
+
+			'destinationCountry' => $country, //'AU',
+			'destinationCode' => $code, //'4000', 
+			'destinationSuburb' => $suburb, //'BRISBANE', 
 			'destinationIs' => 'Business', 
 
 
@@ -93,20 +101,21 @@
 					
 	$response = $obj_tem->getQuotesByRequest($request,$username,$password,$endpoint);
 
+	$quotes = array();
+
 	foreach($response["quote"] as $quote){
-		if ($quote["deliveryMethod"] == "GENERAL ROAD"){
-				// echo "\$".$quote["basePrice"] ." - ". $quote["deliveryMethod"] ."<br/>";
-			
-			echo json_encode(array(
-				"data" => array(
-					"shipping" => $quote["basePrice"]
-				),
-				"status" => array(
-					"code" => 0,
-					"message" => "Success!"
-				)
-			));
-			
-			exit();
-		}
+		$quotes[ $quote["deliveryMethod"] ] = $quote["basePrice"];
+		// if ($quote["deliveryMethod"] == "GENERAL ROAD"){
+		// 		// echo "\$".$quote["basePrice"] ." - ". $quote["deliveryMethod"] ."<br/>";
+		// }
 	}
+
+	echo json_encode(array(
+		"data" => $quotes,
+		"status" => array(
+			"code" => 0,
+			"message" => "Success!"
+		)
+	));
+	
+	exit();
