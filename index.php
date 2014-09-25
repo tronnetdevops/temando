@@ -22,8 +22,13 @@
 	$quantity = $_GET["quantity"];
 
 	$country = $_GET["country"];
-	$code = $_GET["countryCode"];
+	$code = $_GET["postalCode"];
 	$suburb = $_GET["suburb"];
+
+	$shippingType = "Domestic";
+	if ($country != "AU"){
+		$shippingType = "International";
+	}
 
 	$request = array(
 		'anythings' => array(
@@ -45,7 +50,7 @@
 		),
 
 		'anywhere' => array (
-			'itemNature' => 'Domestic',
+			'itemNature' => $shippingType,
 			'itemMethod' => 'Door to Door',
 
 			'originCountry' => 'AU',
@@ -94,7 +99,8 @@
 		// 'clientId' => '64514', 
 		// 'promotionCode' => 'A0001', 
 		'general' => array(
-			'goodsValue' => 24.70,
+			'goodsValue' => $price,
+			'termsOfTrade' => "Delivered Duty Unpaid",
 			'goodsCurrency' => 'AUD'
 		)
 	);
