@@ -91,7 +91,7 @@
 
 
 		'anytime' => array(
-			'readyDate' => '2014-09-29', 
+			'readyDate' => date("Y-m-d", strtotime("+2 days")), 
 			'readyTime' => 'PM'
 		),
 
