@@ -33,6 +33,10 @@
 	$memcache = new Memcached;
 	$memcache->addServer('localhost', 11211);
 
+	if ($_GET["_clear"]){
+		$memcache->delete($memcacheKey);
+	}
+
 	$cached = $memcache->get($memcacheKey);
 	
 	if ($cached){
