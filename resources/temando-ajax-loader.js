@@ -52,6 +52,9 @@
 			if (country && postalCode && suburb && quantity){
 				$.ajax({
 					"url": "https://api.temando.tronnet.me/",
+					"timeout": 15000,
+					"async": false,
+					"dataType": "json",
 					"data": {
 						"country": country,
 						"postalCode": postalCode, //4000
@@ -63,6 +66,10 @@
 						console.log(arguments);	
 
 						$(_this.data.elements.shipping).text("Shipping is: ");
+					},
+					"error": function(){
+						console.log("Timed out, lets try again in 20 seconds");
+						setTimeout(function(){ _this.update.call(_this) }, 20000);
 					}
 				});
 			}
