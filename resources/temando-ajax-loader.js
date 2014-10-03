@@ -52,28 +52,28 @@
 				quantity = els.quantity.value || 0;
 
 			if (country && postalCode && suburb && quantity){
+
+				$(_this.data.elements.shipping).text("Checking shipping...");
+
 				$.ajax({
 					"url": "https://api.temando.tronnet.me/",
 					"timeout": 15000,
-					"async": false,
+					"async": true,
 					"dataType": "json",
 					"data": {
 						"country": country,
 						"postalCode": postalCode, //4000
 						"suburb": suburb, //BRISBANE
 						"quantity": quantity
-					},
-					"done": function(response){
-						console.log("UPdated this shit!");
-						console.log(arguments);	
+					}
+				}).done(function(response){
+					var price = response.data["General (Road)"];
 
-						$(_this.data.elements.shipping).text("Shipping is: ");
-					},
-					"error": function(){
-						console.log("Timed out, lets try again in 20 seconds");
-						if (++_this.data.requests < _this.data.requestsLimit){
-							setTimeout(function(){ _this.update.call(_this) }, 20000);
-						}
+					$(_this.data.elements.shipping).text("Shipping is: "+price);
+				}).fail(function(){
+					$(_this.data.elements.shipping).text("Shoot! We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
+					if (++_this.data.requests < _this.data.requestsLimit){
+						setTimeout(function(){ _this.update.call(_this) }, 7000);
 					}
 				});
 			}
