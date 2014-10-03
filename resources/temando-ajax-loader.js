@@ -12,6 +12,8 @@
 
 	return document.temandoAjaxProxy = {
 		"data": {
+			"requests": 0,
+			"requestLimit": 5,
 			"elements": {
 				"form": form,
 				"city": form.city,
@@ -36,10 +38,10 @@
 			var _this = this,
 				els = this.data.elements;
 
-			$(els.city).bind("blur", function(){ _this.update.call(_this); });
-			$(els.qauntity).bind("blur", function(){ _this.update.call(_this); });
-			$(els.state).bind("change", function(){ _this.update.call(_this); });
-			$(els.country).bind("change", function(){ _this.update.call(_this); });
+			$(els.city).bind("blur", function(){ _this.data.requests = 0; _this.update.call(_this); });
+			$(els.quantity).bind("blur", function(){ _this.data.requests = 0; _this.update.call(_this); });
+			$(els.state).bind("change", function(){ _this.data.requests = 0; _this.update.call(_this); });
+			$(els.country).bind("change", function(){ _this.data.requests = 0; _this.update.call(_this); });
 		},
 		"update": function(){
 			var _this = this,
@@ -69,7 +71,9 @@
 					},
 					"error": function(){
 						console.log("Timed out, lets try again in 20 seconds");
-						setTimeout(function(){ _this.update.call(_this) }, 20000);
+						if (++_this.data.requests < _this.data.requestsLimit){
+							setTimeout(function(){ _this.update.call(_this) }, 20000);
+						}
 					}
 				});
 			}

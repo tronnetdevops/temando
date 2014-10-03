@@ -3,7 +3,7 @@
 	 * @todo  Change HTTP_REFERER to be a specific access domain
 	 *        ie: http://ontrapalooa.com
 	 */
-	header("Access-Control-Allow-Origin: " . rtrim($_SERVER["HTTP_REFERER"], "/"));
+	header("Access-Control-Allow-Origin: " . rtrim($_SERVER["HTTP_ORIGIN"], "/"));
 	header("Access-Control-Allow-Credentials: true");
 
 
@@ -34,7 +34,7 @@
 	$memcache->addServer('localhost', 11211);
 
 	if ($_GET["_clear"]){
-		$memcache->delete($memcacheKey);
+		$memcache->delete($memcacheKey);	
 	}
 
 	$cached = $memcache->get($memcacheKey);
@@ -63,7 +63,7 @@
 			)
 		));
 
-		exit();
+		exit(10);
 	} else {
 		$totals = array();
 
