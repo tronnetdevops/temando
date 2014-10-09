@@ -51,7 +51,7 @@
 			$(els.country).bind("change", function(){ _this.data.requests = 0; _this.update.call(_this); });
 		},
 		"warn": function(title, text){
-			var $ele = $('<div class="warning-modal" id="calc-warning-modal" style="background: white; position: absolute; top: 47%; left: 40%; width: 400px; height: 200px; z-index: 9999; text-align: center; border-radius: 5px; border: 1px solid rgba(0,0,0,0.7);">\
+			var $ele = $('<div class="warning-modal" id="calc-warning-modal" style="background: white; position: absolute; top: '+(+window.scrollY + 300) +'px	; left: 40%; width: 400px; height: 200px; z-index: 9999; text-align: center; border-radius: 5px; border: 1px solid rgba(0,0,0,0.7);">\
 				<div style="background: whitesmoke; text-align: center; height: 50px; width: 100%; font-size: 20px; padding-top: 10px; font-weight: bold; border-radius: 5px;">'+title+'</div>\
 				<div>'+text+'</div>\
 				<button onclick="$(this.parentNode).remove();">OK</button>\
@@ -64,7 +64,9 @@
 
 			setTimeout(function($ele){
 				console.log("Close it...");
-				$ele.remove();
+				if ($ele && typeof $ele == "array" && $ele.length){
+					$ele.remove();
+				}
 			}, 9000, $ele);
 		},
 		"update": function(){
@@ -81,10 +83,28 @@
 
 			if (data.country == "AU" && data.country && data.postalCode && data.suburb && data.quantity){
 
+				window.clearTimeout(_this.data.firstTimeout);
+				window.clearTimeout(_this.data.secondTimeout);
+
+
 				console.log("GO GO GOOO");
 
 				_this.data.elements.shipping.value = 0;
 				$("#total-shipping").text("Calculating shipping...");
+
+				_this.data.gotPrice = false;
+
+				_this.data.firstTimeout = setTimeout(function(){
+					if (!_this.data.gotPrice){
+						$("#total-shipping").text("Crunching...we might not have your region yet...");
+					}
+				}, 6000);
+
+				_this.data.secondTimeout = setTimeout(function(){
+					if (!_this.data.gotPrice){
+						$("#total-shipping").text("Still processing, thank you for your patience...");
+					}
+				}, 18000);
 
 				$.ajax({
 					"url": "https://api.temando.tronnet.me/",
@@ -96,15 +116,14 @@
 						return;// _this.warn("Hmm...", "We're not getting a response from the quote service. Is everything spelled correctly?");
 					}
 
-					var price = response.data["General (Road)"];
+					_this.data.gotPrice = true;
 
-					console.log("GOT SHIPPING!", price)
+					var price = response.data["GENERAL ROAD"]; // General (Road)
 
 					$("#total-shipping").text("")
 
 					_this.data.elements.shipping.value = price;
 				}).fail(function(){
-					console.log("fucken fail...");
 					if (!_this.data.requests){
 						_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
 					}
@@ -114,7 +133,6 @@
 					}
 				}).always(function(failed){
 					if (failed == null || !failed){
-						console.log("fucken fail...");
 						if (!_this.data.requests){
 							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
 						}
