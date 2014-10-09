@@ -28,7 +28,7 @@
 
 	$shippingType = ($country == "AU") ? "Domestic" : "International";
 
-	$memcacheKey = $country."::".$suburb."::".$code;
+	$memcacheKey = $country."::".str_replace(" ", "_", strtolower($suburb))."::".$code;
 
 	$memcache = new Memcached;
 	$memcache->addServer('localhost', 11211);
@@ -39,21 +39,16 @@
 
 	$cached = $memcache->get($memcacheKey);
 	
-	if ($cached){
+	$typicalMax = 250;
+	$booksInBox = 25;
 
-		if ($quantity > 0 && $quantity < 50){
-			$amount = 50;
-		} else if ($quantity > 49 && $quantity < 100){
-			$amount = 100;
-		} else if ($quantity > 99 && $quantity < 150){
-			$amount = 150;
-		} else if ($quantity > 149 && $quantity < 200){
-			$amount = 200;
-		} else if ($quantity > 199 && $quantity < 250){
-			$amount = 250;
-		} else {
-			$amount = 300;
+	if ($cached){
+		for ($i=0;$i<$typicalMax;$i+=$booksInBox){
+			if ($quantity > $i && $quantity < ($i+$booksInBox)){
+				$amount = $i+$booksInBox;
+			}
 		}
+
 
 		echo json_encode(array(
 			"data" => $cached[$amount],
@@ -67,8 +62,8 @@
 	} else {
 		$totals = array();
 
-		for($i=0;$i<6;$i++){
-			$totalQuantity = 50 * $i;
+		for ($i=0;$i<$typicalMax;$i+=$booksInBox){
+			$orderQuantity = $i+$booksInBox;
 			$request = array(
 				'anythings' => array(
 					'anything' => array (
@@ -83,7 +78,7 @@
 							'height' => 20,
 							'distanceMeasurementType' => 'Centimetres',
 							'weightMeasurementType' => 'Grams',
-							'quantity' => $totalQuantity
+							'quantity' => $orderQuantity
 						),
 					),
 				),
@@ -159,7 +154,7 @@
 				// }
 			}
 
-			$totals[$totalQuantity] = $quotes;
+			$totals[$orderQuantity] = $quotes;
 		}
 
 		$memcache->set($memcacheKey, $totals); 
