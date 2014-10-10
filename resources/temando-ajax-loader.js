@@ -1,44 +1,42 @@
-;(function(d,w){
+;setTimeout(function(){
 	console.log("HERE WE GO!");
-	
-	var form = d.forms[0];
 
-	return w.temandoAjaxProxy = {
+	var form = document.forms[0];
+
+	(window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
 			"requestLimit": 5,
 			"elements": {
 				"form": form,
-				"city": form.city,
-				"state": form.state,
-				"zip": form.zip,
-				"country": form.country,
+				"city": form.city || form.billing_city,
+				"state": form.state || form.billing_state,
+				"zip": form.zip || form.billing_zip,
+				"country": form.country || form.billing_country,
 				"shipping": null,
-				"quantity": null
+				"quantity": $("label:contains('Number of Students')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
 			var els = this.data.elements;
 			var firstFind = true;
-			for (var i =0;i<els.form.length;i++){
-				if (els.form[i].type == "number"){
-					if (firstFind){
-						els.quantity = els.form[i];
-						firstFind = false;
-					} else {
-						els.shipping = els.form[i];						
-					}
-				}
+
+			$prelim = $("label:contains('Studio Sessions Preliminary Shipping Total')");
+			if ($prelim.length){
+				this.data.prelim = true;
+				this.data.elements.shipping = $("label:contains('Studio Sessions Preliminary Shipping Total')").get(0);
+
+				els.shipping.parentNode.appendChild(
+					$("<div/>").css({
+						"width": "100%", 
+						"float": "left"
+					}).attr("id", "total-shipping").get(0)
+				 );
+			} else {
+				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
 			}
 
-			els.shipping.parentNode.appendChild(
-				$("<div/>").css({
-					"width": "100%", 
-					"float": "left"
-				}).attr("id", "total-shipping").get(0)
-			 );
-
-			this.bind();
+			this.bind();	
 		},
 		"bind": function(){
 			var _this = this,
@@ -89,20 +87,32 @@
 
 				console.log("GO GO GOOO");
 
-				_this.data.elements.shipping.value = 0;
-				$("#total-shipping").text("Calculating shipping...");
+				if (_this.data.prelim){
+					_this.data.elements.shipping.value = 0;
+					$("#total-shipping").text("Calculating shipping...");
+				} else {
+					$("#temando-calc-shipping-price").text("Calculating shipping...");
+				}
 
 				_this.data.gotPrice = false;
 
 				_this.data.firstTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						$("#total-shipping").text("Crunching...we might not have your region yet...");
+						if (_this.data.prelim){
+							$("#total-shipping").text("Crunching...we might not have your region yet...");
+						} else {
+							$("#temando-calc-shipping-price").text("Crunching...we might not have your region yet...");
+						}
 					}
 				}, 6000);
 
 				_this.data.secondTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						$("#total-shipping").text("Still processing, thank you for your patience...");
+						if (_this.data.prelim){
+							$("#total-shipping").text("Still processing, thank you for your patience...");
+						} else {
+							$("#temando-calc-shipping-price").text("Still processing, thank you for your patience...");
+						}
 					}
 				}, 18000);
 
@@ -122,14 +132,13 @@
 
 					$("#total-shipping").text("")
 
-					_this.data.elements.shipping.value = price;
-				}).fail(function(){
-					if (!_this.data.requests){
-						_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
-					}
+					if (_this.data.prelim){
+						_this.data.elements.shipping.value = price;
+					} else {
+						var origPrice = +$(".grid-summary-grandtotal").children().last().text().substr(1);
+						$("#temando-calc-shipping-price").text("$"+ price);
 
-					if (++_this.data.requests < _this.data.requestLimit){
-						setTimeout(function(){ _this.update.call(_this) }, 7000);
+						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
 					}
 				}).always(function(failed){
 					if (failed == null || !failed){
@@ -140,12 +149,13 @@
 						if (++_this.data.requests < _this.data.requestLimit){
 							setTimeout(function(){ _this.update.call(_this) }, 7000);
 						} else {
-							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");						}
+							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
+						}
 					}
 				});
 			}
 		}
-	};
-})(document, window).init();
+	}).init();
+}, 3000);
 
-// $(document.head).append( $('<script src="http://temandotest.loc/resources/temando-ajax-loader.js" async="true"></script>') );
+// $(document.head).append( $('<script src="http://api.temando.tronne.me/resources/temando-ajax-loader.js" async="true"></script>') );
