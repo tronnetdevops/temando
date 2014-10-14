@@ -42,11 +42,29 @@
 			var _this = this,
 				els = this.data.elements;
 
-			$(els.city).bind("blur", function(){ _this.data.requests = 0; _this.update.call(_this); });
-			$(els.quantity).bind("blur", function(){ _this.data.requests = 0; _this.update.call(_this); });
-			$(els.zip).bind("blur", function(){ _this.data.requests = 0; _this.update.call(_this); });
-			$(els.state).bind("change", function(){ _this.data.requests = 0; _this.update.call(_this); });
-			$(els.country).bind("change", function(){ _this.data.requests = 0; _this.update.call(_this); });
+			$(els.city).bind("blur", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+			});
+			$(els.quantity).bind("blur", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
+
+				if ($prodTotal.length){
+					var newTotal = parseInt((+$(this).val()) / 25);
+					$prodTotal.val( newTotal ).trigger("change")
+				}
+			});
+			$(els.zip).bind("blur", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+			});
+			$(els.country).bind("change", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+			});
 		},
 		"warn": function(title, text){
 			var $ele = $('<div class="warning-modal" id="calc-warning-modal" style="background: white; position: absolute; top: '+(+window.scrollY + 300) +'px	; left: 40%; width: 400px; height: 200px; z-index: 9999; text-align: center; border-radius: 5px; border: 1px solid rgba(0,0,0,0.7);">\
