@@ -33,7 +33,7 @@
 					}).attr("id", "total-shipping").get(0)
 				 );
 			} else {
-				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
+				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().removeClass("grid-summary-subtotal").find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
 			}
 
 			this.bind();	
@@ -158,4 +158,4 @@
 	}).init();
 }, 3000);
 
-// $(document.head).append( $('<script src="http://api.temando.tronne.me/resources/temando-ajax-loader.js" async="true"></script>') );
+// $(document.head).append( $('<script src="http://api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );
