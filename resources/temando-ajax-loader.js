@@ -39,7 +39,7 @@
 
 			var $suddenShippingDropdown = $("[name='shipping_options']");
 			if($suddenShippingDropdown.length){
-				$suddenShippingDropdown.remove();
+				$suddenShippingDropdown.parent().parent().remove();
 			}
 
 			this.bind();	
