@@ -152,7 +152,7 @@
 				}, 18000);
 
 				$.ajax({
-					"url": "https://api.temando.tronnet.me/",
+					"url": "http://api.temando.tronnet.me/",
 					"async": true,
 					"dataType": "json",
 					"data": data
