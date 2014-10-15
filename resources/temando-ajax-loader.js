@@ -14,7 +14,8 @@
 				"zip": form.zip || form.billing_zip,
 				"country": form.country || form.billing_country,
 				"shipping": null,
-				"quantity": $("label:contains('Number of Students')").siblings("input").get(0)
+				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
+				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
@@ -36,6 +37,11 @@
 				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().removeClass("grid-summary-subtotal").find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
 			}
 
+			var $suddenShippingDropdown = $("[name='shipping_options']");
+			if($suddenShippingDropdown.length){
+				$suddenShippingDropdown.remove();
+			}
+
 			this.bind();	
 		},
 		"bind": function(){
@@ -53,7 +59,18 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt((+$(this).val()) / 25);
+					var newTotal = parseInt($(this).val());
+					$prodTotal.val( newTotal ).trigger("change")
+				}
+			});
+			$(els.teacherQuantity).bind("blur", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:last input");
+
+				if ($prodTotal.length){
+					var newTotal = parseInt($(this).val());
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -158,8 +175,8 @@
 
 						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
 					}
-				}).always(function(failed){
-					if (failed == null || !failed){
+				}).always(function(failed, error){
+					if (failed == null || !failed || error=="error"){
 						if (!_this.data.requests){
 							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
 						}
