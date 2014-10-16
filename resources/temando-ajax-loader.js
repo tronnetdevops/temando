@@ -109,7 +109,7 @@
 					"country": els.country.options[ els.country.selectedIndex ].value,
 					"postalCode": els.zip.value,
 					"suburb": els.city.value, //els.state.options[ els.state.selectedIndex ].value,
-					"quantity": els.quantity.value || 0
+					"quantity": els.quantity.value || 1
 				};
 
 			console.log("Getting shipping for: ", data);
