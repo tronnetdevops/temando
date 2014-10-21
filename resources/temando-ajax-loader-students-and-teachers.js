@@ -191,6 +191,6 @@
 			}
 		}
 	}).init();
-}, 9000);
+}, 6000);
 
 // $(document.head).append( $('<script src="//api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );
