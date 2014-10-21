@@ -1,4 +1,4 @@
-;(function(){
+;setTimeout(function(){
 	console.log("HERE WE GO!");
 
 	var form = document.forms[0];
@@ -190,6 +190,6 @@
 			}
 		}
 	}).init();
-})();
+}, 6000);
 
 // $(document.head).append( $('<script src="//api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );

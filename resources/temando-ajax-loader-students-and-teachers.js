@@ -1,4 +1,4 @@
-;(function(){
+;setTimeout(function(){
 	console.log("HERE WE GO!");
 
 	var form = document.forms[0];
@@ -13,19 +13,34 @@
 				"state": form.state || form.billing_state,
 				"zip": form.zip || form.billing_zip,
 				"country": form.country || form.billing_country,
-				"packageType": $("label:contains('Package Type')").siblings("select").get(0),
-				"shipping": $("label:contains('Preliminary Shipping Total')").siblings("input").get(0),
+				"shipping": null,
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
 				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
-			els.shipping.parentNode.appendChild(
-				$("<div/>").css({
-					"width": "100%", 
-					"float": "left"
-				}).attr("id", "total-shipping").get(0)
-			 );
+			var els = this.data.elements;
+			var firstFind = true;
+
+			$prelim = $("label:contains('Studio Sessions Preliminary Shipping Total')");
+			if ($prelim.length){
+				this.data.prelim = true;
+				this.data.elements.shipping = $("label:contains('Studio Sessions Preliminary Shipping Total')").get(0);
+
+				els.shipping.parentNode.appendChild(
+					$("<div/>").css({
+						"width": "100%", 
+						"float": "left"
+					}).attr("id", "total-shipping").get(0)
+				 );
+			} else {
+				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().removeClass("grid-summary-subtotal").find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
+			}
+
+			var $suddenShippingDropdown = $("[name='shipping_options']");
+			if($suddenShippingDropdown.length){
+				$suddenShippingDropdown.parent().parent().remove();
+			}
 
 			this.bind();	
 		},
@@ -44,7 +59,7 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val())+parseInt(els.teacherQuantity	.value || 0);
+					var newTotal = parseInt($(this).val())+parseInt(els.teacherQuantity.value || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -77,9 +92,11 @@
 
 			$ele.click(function(){ $(this).remove(); });
 
+			console.log("Adding warning to body!");
 			$(document.body).append( $ele );
 
 			setTimeout(function($ele){
+				console.log("Close it...");
 				if ($ele && typeof $ele == "array" && $ele.length){
 					$ele.remove();
 				}
@@ -88,32 +105,16 @@
 		"update": function(){
 			var _this = this,
 				els = this.data.elements,
-				selectedType = els.packageType.options[ els.packageType.selectedIndex ],
-				type = selectedType[('innerText' in selectedType) ? 'innerText' : 'textContent'],
 				data = {
 					"country": els.country.options[ els.country.selectedIndex ].value,
 					"postalCode": els.zip.value,
-					"suburb": els.city.value //els.state.options[ els.state.selectedIndex ].value,
+					"suburb": els.city.value, //els.state.options[ els.state.selectedIndex ].value,
+					"quantity": (+els.quantity.value+(+els.teacherQuantity.value)) || 1
 				};
-
-			switch(type){
-				case "Original":
-					data.quantity = +els.quantity.value || 1;
-					break;
-
-				case "Digital":
-					data.quantity = +els.teacherQuantity.value || 1;
-
-					break;
-
-				case "Original + Digital":
-					data.quantity = (+els.quantity.value+(+els.teacherQuantity.value)) || 1;
-					break;
-			}
 
 			console.log("Getting shipping for: ", data);
 
-			if (data.country == "AU" && data.country && data.postalCode && data.suburb && data.quantity){
+			if (data.country == "AU" && data.country && data.postalCode && data.suburb && els.teacherQuantity.value && els.quantity.value){
 
 				window.clearTimeout(_this.data.firstTimeout);
 				window.clearTimeout(_this.data.secondTimeout);
@@ -190,6 +191,6 @@
 			}
 		}
 	}).init();
-})();
+}, 6000);
 
 // $(document.head).append( $('<script src="//api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );
