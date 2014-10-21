@@ -109,12 +109,12 @@
 					"country": els.country.options[ els.country.selectedIndex ].value,
 					"postalCode": els.zip.value,
 					"suburb": els.city.value, //els.state.options[ els.state.selectedIndex ].value,
-					"quantity": els.quantity.value || 1
+					"quantity": (+els.quantity.value+(+els.teacherQuantity.value)) || 1
 				};
 
 			console.log("Getting shipping for: ", data);
 
-			if (data.country == "AU" && data.country && data.postalCode && data.suburb && data.quantity){
+			if (data.country == "AU" && data.country && data.postalCode && data.suburb && els.teacherQuantity.value && els.quantity.value){
 
 				window.clearTimeout(_this.data.firstTimeout);
 				window.clearTimeout(_this.data.secondTimeout);
@@ -193,4 +193,4 @@
 	}).init();
 }, 9000);
 
-// $(document.head).append( $('<script src="http://api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );
+// $(document.head).append( $('<script src="//api.temando.tronnet.me/resources/temando-ajax-loader.js" async="true"></script>') );
