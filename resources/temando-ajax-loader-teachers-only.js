@@ -14,6 +14,7 @@
 				"zip": form.zip || form.billing_zip,
 				"country": form.country || form.billing_country,
 				"shipping": null,
+				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
 				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
 			}
 		},
@@ -50,6 +51,17 @@
 			$(els.city).bind("blur", function(){ 
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
+			});
+			$(els.quantity).bind("blur", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
+
+				if ($prodTotal.length){
+					var newTotal = parseInt($(this).val());
+					$prodTotal.val( newTotal ).trigger("change")
+				}
 			});
 			$(els.teacherQuantity).bind("blur", function(){ 
 				_this.data.requests = 0; 
@@ -102,7 +114,7 @@
 
 			console.log("Getting shipping for: ", data);
 
-			if (data.country == "AU" && data.country && data.postalCode && data.suburb && data.quantity){
+			if (data.country == "AU" && data.country && data.postalCode && data.suburb && els.teacherQuantity.value){
 
 				window.clearTimeout(_this.data.firstTimeout);
 				window.clearTimeout(_this.data.secondTimeout);

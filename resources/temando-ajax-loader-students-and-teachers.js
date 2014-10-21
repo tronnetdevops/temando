@@ -59,7 +59,7 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val());
+					var newTotal = parseInt($(this).val())+parseInt(els.teacherQuantity.value || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -67,10 +67,10 @@
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 
-				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:last input");
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val());
+					var newTotal = parseInt($(this).val())+parseInt(els.quantity.value || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
