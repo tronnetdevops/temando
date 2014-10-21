@@ -14,7 +14,7 @@
 				"zip": form.zip || form.billing_zip,
 				"country": form.country || form.billing_country,
 				"shipping": null,
-				"quantity": $("label:contains('Number of Students')").siblings("input").get(0)
+				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
@@ -51,11 +51,11 @@
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 			});
-			$(els.quantity).bind("blur", function(){ 
+			$(els.teacherQuantity).bind("blur", function(){ 
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 
-				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:last input");
 
 				if ($prodTotal.length){
 					var newTotal = parseInt($(this).val());
@@ -97,7 +97,7 @@
 					"country": els.country.options[ els.country.selectedIndex ].value,
 					"postalCode": els.zip.value,
 					"suburb": els.city.value, //els.state.options[ els.state.selectedIndex ].value,
-					"quantity": els.quantity.value || 1
+					"quantity": els.teacherQuantity.value || 1
 				};
 
 			console.log("Getting shipping for: ", data);
