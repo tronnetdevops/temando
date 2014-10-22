@@ -1,6 +1,6 @@
 ;setTimeout(function(){
 	"use strict"
-	
+
 	console.log("HERE WE GO!");
 
 	var form = document.forms[0];
@@ -67,6 +67,10 @@
 				_this.update.call(_this); 
 			});
 			$(els.country).bind("change", function(){ 
+				_this.data.requests = 0; 
+				_this.update.call(_this); 
+			});
+			$(els.packageType).bind("change", function(){ 
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 			});
