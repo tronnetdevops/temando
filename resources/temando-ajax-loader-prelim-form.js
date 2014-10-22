@@ -1,4 +1,6 @@
 ;setTimeout(function(){
+	"use strict"
+	
 	console.log("HERE WE GO!");
 
 	var form = document.forms[0];
@@ -20,6 +22,7 @@
 			}
 		},
 		"init": function(){
+			var els = this.data.elements;
 			els.shipping.parentNode.appendChild(
 				$("<div/>").css({
 					"width": "100%", 
