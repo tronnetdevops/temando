@@ -129,7 +129,7 @@
 				console.log("GO GO GOOO");
 
 				_this.data.elements.shipping.value = 0;
-				$("#total-shipping").text("Calculating shipping...");}
+				$("#total-shipping").text("Calculating shipping...");
 
 				_this.data.gotPrice = false;
 
