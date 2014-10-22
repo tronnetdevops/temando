@@ -128,32 +128,20 @@
 
 				console.log("GO GO GOOO");
 
-				if (_this.data.prelim){
-					_this.data.elements.shipping.value = 0;
-					$("#total-shipping").text("Calculating shipping...");
-				} else {
-					$("#temando-calc-shipping-price").text("Calculating shipping...");
-				}
+				_this.data.elements.shipping.value = 0;
+				$("#total-shipping").text("Calculating shipping...");}
 
 				_this.data.gotPrice = false;
 
 				_this.data.firstTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						if (_this.data.prelim){
-							$("#total-shipping").text("Crunching...we might not have your region yet...");
-						} else {
-							$("#temando-calc-shipping-price").text("Crunching...we might not have your region yet...");
-						}
+						$("#total-shipping").text("Crunching...we might not have your region yet...");
 					}
 				}, 6000);
 
 				_this.data.secondTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						if (_this.data.prelim){
-							$("#total-shipping").text("Still processing, thank you for your patience...");
-						} else {
-							$("#temando-calc-shipping-price").text("Still processing, thank you for your patience...");
-						}
+						$("#total-shipping").text("Still processing, thank you for your patience...");
 					}
 				}, 18000);
 
@@ -173,14 +161,7 @@
 
 					$("#total-shipping").text("")
 
-					if (_this.data.prelim){
-						_this.data.elements.shipping.value = price;
-					} else {
-						var origPrice = +$(".grid-summary-grandtotal").children().last().text().substr(1);
-						$("#temando-calc-shipping-price").text("$"+ price);
-
-						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
-					}
+					_this.data.elements.shipping.value = price;
 				}).always(function(failed, error){
 					if (failed == null || !failed || error=="error"){
 						if (!_this.data.requests){
