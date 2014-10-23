@@ -157,7 +157,7 @@
 
 					_this.data.gotPrice = true;
 
-					var price = response.data["GENERAL ROAD"]; // General (Road)
+					var price = response.data["General (Road)"]; // General (Road)
 
 					$("#total-shipping").text("")
 

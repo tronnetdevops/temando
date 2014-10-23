@@ -6,6 +6,9 @@
 	header("Access-Control-Allow-Origin: " . rtrim($_SERVER["HTTP_ORIGIN"], "/"));
 	header("Access-Control-Allow-Credentials: true");
 
+	
+	$typicalMax = 12;
+	$booksInBox = 25;
 
 	require_once('modules/temando.php');
 
@@ -19,7 +22,7 @@
 
 	$price = 24.70;
 
-	$quantity = isset($_GET["quantity"]) ? $_GET["quantity"] : 1;
+	$quantity = isset($_GET["quantity"]) ? floor($_GET["quantity"] / $booksInBox) : 1;
 	$paid = ($_GET["paid"] == "1") ? "Paid" : "Unpaid";
 
 	$country = isset($_GET["country"]) ? $_GET["country"] : "AU";
@@ -38,20 +41,10 @@
 	}
 
 	$cached = $memcache->get($memcacheKey);
-	
-	$typicalMax = 250;
-	$booksInBox = 25;
 
 	if ($cached){
-		for ($i=0;$i<$typicalMax;$i+=$booksInBox){
-			if ($quantity > $i && $quantity < ($i+$booksInBox)){
-				$amount = $i+$booksInBox;
-			}
-		}
-
-
 		echo json_encode(array(
-			"data" => $cached[$amount],
+			"data" => $cached[$quantity],
 			"status" => array(
 				"code" => 0,
 				"message" => "Success!"
@@ -62,8 +55,8 @@
 	} else {
 		$totals = array();
 
-		for ($i=0;$i<$typicalMax;$i+=$booksInBox){
-			$orderQuantity = $i+$booksInBox;
+		for ($i=0;$i<$typicalMax;$i++){
+			$orderQuantity = $i;
 			$request = array(
 				'anythings' => array(
 					'anything' => array (
