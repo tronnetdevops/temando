@@ -169,10 +169,10 @@
 					$("#total-shipping").text("")
 
 					if (_this.data.prelim){
-						_this.data.elements.shipping.value = parseInt(price)+_this.data.buffer;
+						_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
 					} else {
 						var origPrice = +$(".grid-summary-grandtotal").children().last().text().substr(1);
-						$("#temando-calc-shipping-price").text("$"+ parseInt(price)+_this.data.buffer);
+						$("#temando-calc-shipping-price").text("$"+ parseInt(+parseInt(price)+(+_this.data.buffer)));
 
 						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
 					}

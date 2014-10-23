@@ -162,7 +162,7 @@
 
 					$("#total-shipping").text("")
 
-					_this.data.elements.shipping.value = parseInt(price)+_this.data.buffer;
+					_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
 				}).always(function(failed, error){
 					if (failed == null || !failed || error=="error"){
 						if (!_this.data.requests){
