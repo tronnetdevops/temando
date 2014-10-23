@@ -67,8 +67,8 @@
 							'qualifierFreightGeneralFragile' => 'N',
 							'weight' => 700,
 							'length' => 20,
-							'width' => 30,
-							'height' => 20,
+							'width' => 20,
+							'height' => 30,
 							'distanceMeasurementType' => 'Centimetres',
 							'weightMeasurementType' => 'Grams',
 							'quantity' => $orderQuantity
