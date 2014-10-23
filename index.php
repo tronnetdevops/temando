@@ -56,8 +56,8 @@
 		$totals = array();
 
 		for ($i=0;$i<$typicalMax;$i++){
-			error_log("SEDNING REQUEST FOR " . $i);
-			$orderQuantity = $i;
+			$orderQuantity = $i+1;
+			error_log("SEDNING REQUEST FOR " . $orderQuantity);
 			$request = array(
 				'anythings' => array(
 					'anything' => array (
@@ -137,6 +137,7 @@
 
 			if ($_GET["debug"]){
 				var_dump($response);
+				error_log(var_export($response, true));
 			}
 
 			$quotes = array();
