@@ -65,10 +65,10 @@
 							'subclass' => 'Household Goods',
 							'packaging' => 'Box',
 							'qualifierFreightGeneralFragile' => 'N',
-							'weight' => 700,
-							'length' => 20,
+							'weight' => 18000,
+							'length' => 30,
 							'width' => 20,
-							'height' => 30,
+							'height' => 20,
 							'distanceMeasurementType' => 'Centimetres',
 							'weightMeasurementType' => 'Grams',
 							'quantity' => $orderQuantity
