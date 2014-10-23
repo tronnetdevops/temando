@@ -28,6 +28,7 @@
 	$price = $argv[6];
 	$paid = $argv[7];
 	$shippingType = $argv[8];
+	$debug = $argv[9];
 	
 	error_log("SEDNING REQUEST FOR " . $orderQuantity);
 	$request = array(
@@ -107,7 +108,7 @@
 					
 	$response = $obj_tem->getQuotesByRequest($request,$username,$password,$endpoint);
 
-	if ($_GET["debug"]){
+	if ($debug){
 		error_log("RESPONSE:");
 		error_log(var_export($response, true));
 	}
