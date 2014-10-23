@@ -8,6 +8,7 @@
 	(window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
+			"buffer": 15,
 			"requestLimit": 5,
 			"elements": {
 				"form": form,
@@ -161,7 +162,7 @@
 
 					$("#total-shipping").text("")
 
-					_this.data.elements.shipping.value = price;
+					_this.data.elements.shipping.value = parseInt(price)+_this.data.buffer;
 				}).always(function(failed, error){
 					if (failed == null || !failed || error=="error"){
 						if (!_this.data.requests){
