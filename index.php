@@ -137,6 +137,7 @@
 
 			if ($_GET["debug"]){
 				var_dump($response);
+				error_log("RESPONSE:");
 				error_log(var_export($response, true));
 			}
 
