@@ -7,7 +7,7 @@
 	header("Access-Control-Allow-Credentials: true");
 
 	
-	$typicalMax = 12;
+	$typicalMax = 16; // = 400
 	$booksInBox = 25;
 
 	require_once('modules/temando.php');
@@ -81,8 +81,8 @@
 					'itemMethod' => 'Door to Door',
 
 					'originCountry' => 'AU',
-					'originCode' => '4069',
-					'originSuburb' => 'KENMORE', 
+					'originCode' => '3192',
+					'originSuburb' => 'Cheltenham', 
 					'originIs' => 'Business', 
 
 					'originBusDock' => 'N', 
