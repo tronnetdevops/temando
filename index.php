@@ -56,6 +56,7 @@
 		$totals = array();
 
 		for ($i=0;$i<$typicalMax;$i++){
+			error_log("SEDNING REQUEST FOR " . $i);
 			$orderQuantity = $i;
 			$request = array(
 				'anythings' => array(
