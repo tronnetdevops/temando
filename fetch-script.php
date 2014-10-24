@@ -30,7 +30,7 @@
 	$shippingType = $argv[8];
 	$debug = $argv[9];
 	
-	error_log("SEDNING REQUEST FOR " . $orderQuantity);
+	error_log("SENDING REQUEST FOR " . $orderQuantity);
 	$request = array(
 		'anythings' => array(
 			'anything' => array (
@@ -109,8 +109,10 @@
 	$response = $obj_tem->getQuotesByRequest($request,$username,$password,$endpoint);
 
 	if ($debug){
-		error_log("RESPONSE:");
+		error_log("RESPONSE FOR: " . $orderQuantity);
+		error_log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		error_log(var_export($response, true));
+		error_log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
 	$quotes = array();
