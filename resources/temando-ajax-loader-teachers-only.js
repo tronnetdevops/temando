@@ -1,5 +1,5 @@
 ;setTimeout(function(){
-	console.log("HERE WE GO!");
+	"use strict"
 
 	var form = document.forms[0];
 
@@ -7,6 +7,7 @@
 		"data": {
 			"requests": 0,
 			"requestLimit": 5,
+			"wait": 2000,
 			"buffer": 15,
 			"elements": {
 				"form": form,
@@ -20,25 +21,22 @@
 			}
 		},
 		"init": function(){
-			var els = this.data.elements;
-			var firstFind = true;
+			var els = this.data.elements,
+				$suddenShippingDropdown = $("[name='shipping_options']");
 
-			$prelim = $("label:contains('Studio Sessions Preliminary Shipping Total')");
-			if ($prelim.length){
-				this.data.prelim = true;
-				this.data.elements.shipping = $("label:contains('Studio Sessions Preliminary Shipping Total')").get(0);
+			$(".grid-summary-subtotal").after( 
+				$(".grid-summary-subtotal")
+					.clone().removeClass("grid-summary-subtotal")
+						.find("td")
+							.first().text("Shipping")
+						.end()
+						.last()
+							.attr("id", "temando-calc-shipping-price")
+							.text("Complete Shipping Address First")
+						.end()
+					.end()
+			);
 
-				els.shipping.parentNode.appendChild(
-					$("<div/>").css({
-						"width": "100%", 
-						"float": "left"
-					}).attr("id", "total-shipping").get(0)
-				 );
-			} else {
-				$(".grid-summary-subtotal").after( $(".grid-summary-subtotal").clone().removeClass("grid-summary-subtotal").find("td").first().text("Shipping").end().last().attr("id", "temando-calc-shipping-price").text("Complete Shipping Address First").end().end() );
-			}
-
-			var $suddenShippingDropdown = $("[name='shipping_options']");
 			if($suddenShippingDropdown.length){
 				$suddenShippingDropdown.parent().parent().remove();
 			}
@@ -60,7 +58,7 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val());
+					var newTotal = parseInt($(this).val())+parseInt(els.teacherQuantity.value || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -68,10 +66,10 @@
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 
-				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:last input");
+				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val());
+					var newTotal = parseInt($(this).val())+parseInt(els.quantity.value || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -93,15 +91,13 @@
 
 			$ele.click(function(){ $(this).remove(); });
 
-			console.log("Adding warning to body!");
 			$(document.body).append( $ele );
 
 			setTimeout(function($ele){
-				console.log("Close it...");
 				if ($ele && typeof $ele == "array" && $ele.length){
 					$ele.remove();
 				}
-			}, 9000, $ele);
+			}, 4000, $ele);
 		},
 		"update": function(){
 			var _this = this,
@@ -109,8 +105,8 @@
 				data = {
 					"country": els.country.options[ els.country.selectedIndex ].value,
 					"postalCode": els.zip.value,
-					"suburb": els.city.value, //els.state.options[ els.state.selectedIndex ].value,
-					"quantity": els.teacherQuantity.value || 1
+					"suburb": els.city.value,
+					"quantity": +els.teacherQuantity.value || 1
 				};
 
 			console.log("Getting shipping for: ", data);
@@ -120,37 +116,21 @@
 				window.clearTimeout(_this.data.firstTimeout);
 				window.clearTimeout(_this.data.secondTimeout);
 
-
-				console.log("GO GO GOOO");
-
-				if (_this.data.prelim){
-					_this.data.elements.shipping.value = 0;
-					$("#total-shipping").text("Calculating shipping...");
-				} else {
-					$("#temando-calc-shipping-price").text("Calculating shipping...");
-				}
+				$("#temando-calc-shipping-price").text("Calculating shipping...");
 
 				_this.data.gotPrice = false;
 
 				_this.data.firstTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						if (_this.data.prelim){
-							$("#total-shipping").text("Crunching...we might not have your region yet...");
-						} else {
-							$("#temando-calc-shipping-price").text("Crunching...we might not have your region yet...");
-						}
+						$("#temando-calc-shipping-price").text("Crunching...we might not have your region yet...");
 					}
-				}, 6000);
+				}, _this.data.wait + 1000);
 
 				_this.data.secondTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
-						if (_this.data.prelim){
-							$("#total-shipping").text("Still processing, thank you for your patience...");
-						} else {
-							$("#temando-calc-shipping-price").text("Still processing, thank you for your patience...");
-						}
+						$("#temando-calc-shipping-price").text("Still processing, thank you for your patience...");
 					}
-				}, 18000);
+				}, _this.data.wait + 8000);
 
 				$.ajax({
 					"url": "http://api.temando.tronnet.me/",
@@ -158,37 +138,29 @@
 					"dataType": "json",
 					"data": data
 				}).done(function(response){
-					if (response == null || !response){
-						return;// _this.warn("Hmm...", "We're not getting a response from the quote service. Is everything spelled correctly?");
-					}
+					if (response.status.code == 1){
+						if (!_this.data.requests){
+							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~5 seconds...");
+						}
 
-					_this.data.gotPrice = true;
-
-					var price = response.data["General (Road)"]; // General (Road)
-
-					$("#total-shipping").text("")
-
-					if (_this.data.prelim){
-						_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
+						if (++_this.data.requests < _this.data.requestLimit){
+							setTimeout(function(){ _this.update.call(_this) }, _this.data.wait);
+						} else {
+							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
+						}
 					} else {
+						_this.data.gotPrice = true;
+
+						var price = response.data[ response.data._lowest ];
 						var origPrice = +$(".grid-summary-grandtotal").children().last().text().substr(1);
+
+						$("#total-shipping").text("")
+
 						$("#temando-calc-shipping-price").text("$"+ parseInt(+parseInt(price)+(+_this.data.buffer)));
 
 						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
 					}
-				}).always(function(failed, error){
-					if (failed == null || !failed || error=="error"){
-						if (!_this.data.requests){
-							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
-						}
-
-						if (++_this.data.requests < _this.data.requestLimit){
-							setTimeout(function(){ _this.update.call(_this) }, 7000);
-						} else {
-							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
-						}
-					}
-				});
+				})
 			}
 		}
 	}).init();

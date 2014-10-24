@@ -139,13 +139,13 @@
 					if (!_this.data.gotPrice){
 						$("#total-shipping").text("Crunching...we might not have your region yet...");
 					}
-				}, 6000);
+				}, _this.data.wait + 1000);
 
 				_this.data.secondTimeout = setTimeout(function(){
 					if (!_this.data.gotPrice){
 						$("#total-shipping").text("Still processing, thank you for your patience...");
 					}
-				}, 18000);
+				}, _this.data.wait + 8000);
 
 				$.ajax({
 					"url": "http://api.temando.tronnet.me/",
