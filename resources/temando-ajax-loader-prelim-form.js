@@ -166,7 +166,7 @@
 					} else {
 						_this.data.gotPrice = true;
 
-						var price = response.data["General (Road)"]; // General (Road)
+						var price = response.data[ response.data._lowest ]; // General (Road)
 
 						$("#total-shipping").text("")
 

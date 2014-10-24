@@ -132,7 +132,7 @@
 		$quotes[ $quote["deliveryMethod"] ] = $quote["totalPrice"];
 	}
 
-	$quote["LOWEST"] = $lowestKey;
+	$quote["_lowest"] = $lowestKey;
 
 	$memcache = new Memcached;
 	$memcache->addServer('localhost', 11211);
