@@ -43,6 +43,8 @@
 			)
 		));
 	} else {
+		$memcache->close();
+		
 		for ($i=0;$i<$typicalMax;$i++){
 			$orderQuantity = $i+1;
 			Proc_Close (Proc_Open ("php -f ./fetch-script.php $memcacheKey $orderQuantity $country $code $suburb $price $paid $shippingType $debug &> /dev/null &", Array (), $orderQuantity));

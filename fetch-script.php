@@ -121,6 +121,12 @@
 
 	$totals[$orderQuantity] = $quotes;
 
+
+	$memcache = new Memcached;
+	$memcache->addServer('localhost', 11211);
+
 	$memcache->set($memcacheKey."::".$orderQuantity, $totals); 
 
+	$memcache->close();
+	
 	exit();
