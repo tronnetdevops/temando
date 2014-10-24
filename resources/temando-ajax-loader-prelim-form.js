@@ -9,7 +9,7 @@
 		"data": {
 			"requests": 0,
 			"requestLimit": 5,
-			"wait": 3000,
+			"wait": 2000,
 			"buffer": 15,
 			"elements": {
 				"form": form,

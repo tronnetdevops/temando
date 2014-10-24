@@ -14,7 +14,7 @@
 
 	$price = 24.70;
 
-	$quantity = isset($_GET["quantity"]) ? floor($_GET["quantity"] / $booksInBox) : 1;
+	$quantity = isset($_GET["quantity"]) ? floor($_GET["quantity"] / $booksInBox) + 1 : 1;
 	$paid = ($_GET["paid"] == "1") ? "Paid" : "Unpaid";
 
 	$country = isset($_GET["country"]) ? $_GET["country"] : "AU";
