@@ -118,7 +118,7 @@
 	$quotes = array();
 
 	foreach($response["quote"] as $quote){
-		$quotes[ $quote["deliveryMethod"] ] = $quote["basePrice"];
+		$quotes[ $quote["deliveryMethod"] ] = $quote["totalPrice"];
 	}
 
 	$totals[$orderQuantity] = $quotes;

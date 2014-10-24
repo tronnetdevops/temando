@@ -8,8 +8,9 @@
 	(window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
-			"buffer": 15,
 			"requestLimit": 5,
+			"wait": 3000,
+			"buffer": 15,
 			"elements": {
 				"form": form,
 				"city": form.city || form.billing_city,
@@ -91,7 +92,7 @@
 				if ($ele && typeof $ele == "array" && $ele.length){
 					$ele.remove();
 				}
-			}, 9000, $ele);
+			}, 4000, $ele);
 		},
 		"update": function(){
 			var _this = this,
@@ -152,17 +153,25 @@
 					"dataType": "json",
 					"data": data
 				}).done(function(response){
-					if (response == null || !response){
-						return;// _this.warn("Hmm...", "We're not getting a response from the quote service. Is everything spelled correctly?");
+					if (response.code == 1){
+						if (!_this.data.requests){
+							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
+						}
+
+						if (++_this.data.requests < _this.data.requestLimit){
+							setTimeout(function(){ _this.update.call(_this) }, _this.data.wait);
+						} else {
+							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
+						}
+					} else {
+						_this.data.gotPrice = true;
+
+						var price = response.data["General (Road)"]; // General (Road)
+
+						$("#total-shipping").text("")
+
+						_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
 					}
-
-					_this.data.gotPrice = true;
-
-					var price = response.data["General (Road)"]; // General (Road)
-
-					$("#total-shipping").text("")
-
-					_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
 				}).always(function(failed, error){
 					if (failed == null || !failed || error=="error"){
 						if (!_this.data.requests){
@@ -170,7 +179,7 @@
 						}
 
 						if (++_this.data.requests < _this.data.requestLimit){
-							setTimeout(function(){ _this.update.call(_this) }, 7000);
+							setTimeout(function(){ _this.update.call(_this) }, _this.data.wait);
 						} else {
 							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
 						}
