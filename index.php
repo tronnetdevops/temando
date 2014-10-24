@@ -43,7 +43,6 @@
 			)
 		));
 	} else {
-		Memcached::quit();
 
 		for ($i=0;$i<$typicalMax;$i++){
 			$orderQuantity = $i+1;
@@ -58,3 +57,5 @@
 			)
 		));
 	}
+
+	exit();
