@@ -40,9 +40,9 @@
 					'packaging' => 'Box',
 					'qualifierFreightGeneralFragile' => 'N',
 					'weight' => 18000,
-					'length' => 30,
+					'length' => 20,
 					'width' => 20,
-					'height' => 20,
+					'height' => 30,
 					'distanceMeasurementType' => 'Centimetres',
 					'weightMeasurementType' => 'Grams',
 					'quantity' => $orderQuantity
