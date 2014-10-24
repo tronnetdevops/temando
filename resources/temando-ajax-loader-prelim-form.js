@@ -92,7 +92,7 @@
 				if ($ele && typeof $ele == "array" && $ele.length){
 					$ele.remove();
 				}
-			}, 4000, $ele);
+			}, 2000, $ele);
 		},
 		"update": function(){
 			var _this = this,
@@ -155,7 +155,7 @@
 				}).done(function(response){
 					if (response.status.code == 1){
 						if (!_this.data.requests){
-							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
+							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~5 seconds...");
 						}
 
 						if (++_this.data.requests < _this.data.requestLimit){

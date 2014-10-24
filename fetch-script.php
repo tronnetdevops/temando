@@ -122,9 +122,17 @@
 
 	$quotes = array();
 
+	$lowest = false;
+	$lowestKey = "General Road";
 	foreach($response["quote"] as $quote){
+		if (!$lowest || $lowest > $quote["totalPrice"]){
+			$lowest = $quote["totalPrice"];
+			$lowestKey = $quote["deliveryMethod"];
+		}
 		$quotes[ $quote["deliveryMethod"] ] = $quote["totalPrice"];
 	}
+
+	$quote["LOWEST"] = $lowestKey;
 
 	$memcache = new Memcached;
 	$memcache->addServer('localhost', 11211);
