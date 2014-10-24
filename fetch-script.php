@@ -5,6 +5,8 @@
 	 */
 	ini_set('default_socket_timeout', 600);
 
+	session_start();
+
 	require_once('modules/temando.php');
 
 	$obj_tem = new TemandoWebServices;
@@ -28,8 +30,11 @@
 	$price = $argv[6];
 	$paid = $argv[7];
 	$shippingType = $argv[8];
-	$debug = $argv[9];
-	
+	$sess_id = $argv[9];
+	$debug = $argv[10];
+
+	session_id($sess_id);
+
 	error_log("SENDING REQUEST FOR " . $orderQuantity);
 	$request = array(
 		'anythings' => array(
@@ -128,5 +133,13 @@
 	$memcache->addServer('localhost', 11211);
 
 	$memcache->set($memcacheKey."::".$orderQuantity, $totals); 
+
+	/**
+	 * Potential race condition, but shouldn't matter as the end result is the same and increments
+	 * will be static.
+	 */
+	if (++$_SESSION["working_pos"] == 12){
+		$_SESSION["working"] = false;
+	}
 
 	exit();
