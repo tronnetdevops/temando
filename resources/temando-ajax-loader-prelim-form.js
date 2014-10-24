@@ -107,7 +107,7 @@
 
 			switch(type){
 				case "Original":
-					data.quantity = +els.quantity.value || 1;
+					data.quantity = (+els.quantity.value+(+els.teacherQuantity.value)) || 1;
 					break;
 
 				case "Digital":
