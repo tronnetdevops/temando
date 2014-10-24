@@ -46,11 +46,13 @@
 	} else {
 		$message = "Still building shipping matrix!";
 
-		if (!$_SESSION["working"]){
+		if (!isset($_SESSION["working"]) || !$_SESSION["working"] 
+			|| !isset($_SESSION["working_timestamp"]) || $_SESSION["working_timestamp"] < (time() - 60)){
 			
 			$sess_id = session_id();
 			$_SESSION["working"] = true;
 			$_SESSION["working_pos"] = 0;
+			$_SESSION["working_timestamp"] = time();
 
 			for ($i=0;$i<$typicalMax;$i++){
 				$orderQuantity = $i+1;
