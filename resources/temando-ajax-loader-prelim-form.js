@@ -153,7 +153,7 @@
 					"dataType": "json",
 					"data": data
 				}).done(function(response){
-					if (response.code == 1){
+					if (response.status.code == 1){
 						if (!_this.data.requests){
 							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
 						}
@@ -171,18 +171,6 @@
 						$("#total-shipping").text("")
 
 						_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
-					}
-				}).always(function(failed, error){
-					if (failed == null || !failed || error=="error"){
-						if (!_this.data.requests){
-							_this.warn("Shoot!", "We haven't processed orders from your area before, so we have to crunch some numbers real quick! Give us ~20 seconds...");
-						}
-
-						if (++_this.data.requests < _this.data.requestLimit){
-							setTimeout(function(){ _this.update.call(_this) }, _this.data.wait);
-						} else {
-							_this.warn("No go...", "We are having some issues attempting to get a quote for your region. Please contact us and let us know!");
-						}
 					}
 				});
 			}
