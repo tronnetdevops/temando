@@ -46,6 +46,13 @@
 	} else {
 		$message = "Still building shipping matrix!";
 
+		if ($debug){
+			error_log("SESSIONS");
+			error_log("working: ".$_SESSION["working"]);
+			error_log("working_pos: ".$_SESSION["working_pos"]);
+			error_log("working_timestamp: ".$_SESSION["working_timestamp"]);
+		}
+
 		if (!isset($_SESSION["working"]) || !$_SESSION["working"] 
 			|| !isset($_SESSION["working_timestamp"]) || $_SESSION["working_timestamp"] < (time() - 60)){
 			
