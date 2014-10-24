@@ -129,7 +129,9 @@
 			$lowest = $quote["totalPrice"];
 			$lowestKey = $quote["deliveryMethod"];
 		}
-		$quotes[ $quote["deliveryMethod"] ] = $quote["totalPrice"];
+		$quotes[ $quote["deliveryMethod"] ] = array(
+			"total" => $quote["totalPrice"],
+			"carrier_id" => $quote["carrier"]["id"];
 	}
 
 	$quotes["_lowest"] = $lowestKey;

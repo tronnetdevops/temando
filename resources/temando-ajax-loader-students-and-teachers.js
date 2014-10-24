@@ -151,7 +151,7 @@
 					} else {
 						_this.data.gotPrice = true;
 
-						var price = response.data[ response.data._lowest ];
+						var price = response.data[ response.data._lowest ]["total"];
 						var origPrice = +$(".grid-summary-grandtotal").children().last().text().substr(1);
 
 						$("#total-shipping").text("")
