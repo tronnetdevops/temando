@@ -127,6 +127,6 @@
 
 	$memcache->set($memcacheKey."::".$orderQuantity, $totals); 
 
-	$memcache->close();
-	
+	Memcached::quit();
+		
 	exit();
