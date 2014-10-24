@@ -126,13 +126,10 @@
 		$quotes[ $quote["deliveryMethod"] ] = $quote["totalPrice"];
 	}
 
-	$totals[$orderQuantity] = $quotes;
-
-
 	$memcache = new Memcached;
 	$memcache->addServer('localhost', 11211);
 
-	$memcache->set($memcacheKey."::".$orderQuantity, $totals); 
+	$memcache->set($memcacheKey."::".$orderQuantity, $quotes); 
 
 	/**
 	 * Potential race condition, but shouldn't matter as the end result is the same and increments
