@@ -35,6 +35,7 @@
 	$cached = $memcache->get($memcacheKey."::".$quantity);
 
 	if ($cached){
+		$cached["total_boxes"] = $quantity;
 		echo json_encode(array(
 			"data" => $cached,
 			"status" => array(
