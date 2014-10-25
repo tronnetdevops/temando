@@ -17,7 +17,8 @@
 				"country": form.country || form.billing_country,
 				"shipping": null,
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
-				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
+				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0),
+				"courier": $("label:contains('Courier ID')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
@@ -159,6 +160,8 @@
 						$("#temando-calc-shipping-price").text("$"+ parseInt(+parseInt(price)+(+_this.data.buffer)));
 
 						$(".grid-summary-grandtotal").children().last().text("$"+ ((+origPrice + (+price))+"").replace(/(\d+)\.(\d{2})\d*/gim, "$1.$2") );	
+						
+						_this.data.elements.courier.value = response.data[ response.data._lowest ]["carrier_id"];
 					}
 				})
 			}
