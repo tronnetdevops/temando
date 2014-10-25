@@ -20,7 +20,8 @@
 				"packageType": $("label:contains('Package Type')").siblings("select").get(0),
 				"shipping": $("label:contains('Preliminary Shipping Total')").siblings("input").get(0),
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
-				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0)
+				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0),
+				"courier": $("label:contains('Courier ID')").siblings("input").get(0)
 			}
 		},
 		"init": function(){
@@ -171,6 +172,7 @@
 						$("#total-shipping").text("")
 
 						_this.data.elements.shipping.value = parseInt(+parseInt(price)+(+_this.data.buffer));
+						_this.data.elements.courier.value = response.data[ response.data._lowest ]["carrier_id"];
 					}
 				});
 			}
