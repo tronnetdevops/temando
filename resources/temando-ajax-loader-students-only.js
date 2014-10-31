@@ -1,8 +1,6 @@
 ;setTimeout(function(){
 	"use strict"
 
-	var form = document.forms[0];
-
 	(window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
@@ -10,9 +8,7 @@
 			"wait": 2000,
 			"buffer": 15,
 			"elements": {
-				"form": form,
-				"city": $("label:contains('Shipping Address 1')").siblings("input").get(0),
-				"state": $("label:contains('Shipping City')").siblings("input").get(0),
+				"city": $("label:contains('Shipping City')").siblings("input").get(0),
 				"zip": $("label:contains('Shipping Zip')").siblings("input").get(0),
 				"country": $("label:contains('Shipping - Country')").siblings("select").get(0),
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
