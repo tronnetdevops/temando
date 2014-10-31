@@ -77,10 +77,6 @@
 				_this.data.requests = 0; 
 				_this.update.call(_this); 
 			});
-			$(els.country).bind("change", function(){ 
-				_this.data.requests = 0; 
-				_this.update.call(_this); 
-			});
 		},
 		"warn": function(title, text){
 			var $ele = $('<div class="warning-modal" id="calc-warning-modal" style="background: white; position: absolute; top: '+(+window.scrollY + 300) +'px	; left: 40%; width: 400px; height: 200px; z-index: 9999; text-align: center; border-radius: 5px; border: 1px solid rgba(0,0,0,0.7);">\
