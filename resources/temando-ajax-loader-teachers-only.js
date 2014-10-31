@@ -11,11 +11,10 @@
 			"buffer": 15,
 			"elements": {
 				"form": form,
-				"city": form.city || form.billing_city,
-				"state": form.state || form.billing_state,
-				"zip": form.zip || form.billing_zip,
-				"country": form.country || form.billing_country,
-				"shipping": null,
+				"city": $("label:contains('Shipping Address 1')").siblings("input").get(0),
+				"state": $("label:contains('Shipping City')").siblings("input").get(0),
+				"zip": $("label:contains('Shipping Zip')").siblings("input").get(0),
+				"country": $("label:contains('Shipping - Country')").siblings("input").get(0),
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
 				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0),
 				"courier": $("label:contains('Courier ID')").siblings("input").get(0)
