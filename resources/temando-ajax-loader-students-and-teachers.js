@@ -1,9 +1,7 @@
 ;setTimeout(function(){
 	"use strict"
 
-	var form = document.forms[0];
-
-	(window.temandoAjaxProxy = {
+	return (window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
 			"requestLimit": 5,
@@ -39,7 +37,9 @@
 				$suddenShippingDropdown.parent().parent().remove();
 			}
 
-			this.bind();	
+			this.bind();
+
+			return true;	
 		},
 		"bind": function(){
 			var _this = this,
