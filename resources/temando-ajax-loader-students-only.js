@@ -103,7 +103,7 @@
 			var _this = this,
 				els = this.data.elements,
 				data = {
-					"country": els.country.options[ els.country.selectedIndex ].value,
+					"country": "AU",
 					"postalCode": els.zip.value,
 					"suburb": els.city.value,
 					"quantity": +els.quantity.value || 1
