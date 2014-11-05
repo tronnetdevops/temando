@@ -3,7 +3,8 @@
 
 	return (window.TNDOFormReplicator = {
 		"init": function(){
-			var $group = $("<div>"),
+			var API_URI = "api.temando.tronnet.me/ontraport.php",
+				$group = $("<div>"),
 				$section = $("<div><h3 class='teacher-num'>1</h3></div>").css({
 					"border-top": "1px solid rgba(0,0,0,0.6)"
 				}).addClass("moonray-form-element-wrapper moonray-form-input-type-text"),
@@ -60,6 +61,10 @@
 			});
 
 			$submit.before( $group );
+
+			$form.attr({
+				"action": API_URI
+			})
 
 			return this;
 		}
