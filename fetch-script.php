@@ -35,7 +35,7 @@
 
 	session_id($sess_id);
 
-	error_log("SENDING REQUEST FOR " . $orderQuantity);
+	// error_log("SENDING REQUEST FOR " . $orderQuantity);
 	$request = array(
 		'anythings' => array(
 			'anything' => array (
@@ -143,10 +143,9 @@
 	$memcache->set($memcacheKey."::".$orderQuantity, $quotes); 
 
 	/**
-	 * Potential race condition, but shouldn't matter as the end result is the same and increments
-	 * will be static.
+	 * Potential race condition, but shouldn't matter as the end result is the same and increments are scalar.
 	 */
-	if (++$_SESSION["working_pos"] == 12){
+	if (++$_SESSION["working_pos"] >= 12){
 		$_SESSION["working"] = false;
 	}
 
