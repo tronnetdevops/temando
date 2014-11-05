@@ -4,7 +4,7 @@
 	return (window.TNDOFormReplicator = {
 		"init": function(){
 			var $group = $("<div>"),
-				$section = $("<div><h3 class='teacher-num'>0</h3></div>").css({
+				$section = $("<div><h3 class='teacher-num'>1</h3></div>").css({
 					"border-top": "1px solid rgba(0,0,0,0.6)"
 				}).addClass("moonray-form-element-wrapper moonray-form-input-type-text"),
 				$primary = $("label:contains('First Name')").parent(),
@@ -48,14 +48,13 @@
 					});
 				});
 
-				$clone.find(".teacher-num").text( fieldsReplicated );
+				$clone.find(".teacher-num").text( fieldsReplicated + 1 );
 
 				$group.append( $clone );
 			}
 
 			// Remove the original ones so we can replace them all in one go
 			$initialElements.map(function($ele){
-				console.log("Going to remove this guy!", $ele);
 				$ele.remove();
 			});
 
