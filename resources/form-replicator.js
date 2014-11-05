@@ -26,6 +26,8 @@
 					"name": "teachers[0]["+key+"]"
 				});
 
+				console.log("Key: " + key);
+
 				$section.append( $clone );
 
 				$initialElements.push( $head );
