@@ -34,10 +34,11 @@
         <field name="Last Name">${teacher["last-name"]}</field>
         <field name="Email">${teacher["email"]}</field>
         <field name="Office Phone">${teacher["office-phone"]}</field>
+        <field name="Organisation -Job Title">${teacher["organisation-job-title"]}</field>
         <field name="Zip Code">${_REQUEST["organisation-zip"]}</field>
         <field name="City">${_REQUEST["organisation-city"]}</field>
         <field name="State">${_REQUEST["organisation-state"]}</field>
-        <field name="Company">${_REQUEST["organisation-school"]}</field>
+        <field name="Organisation - School">${_REQUEST["organisation-school"]}</field>
     </Group_Tag>
     <Group_Tag name="Sequences and Tags">
         <field name="Contact Tags"></field>
