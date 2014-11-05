@@ -98,7 +98,7 @@
 				"name": "organisation-city"
 			});
 
-			$("label:contains('State')").siblings("input").attr({
+			$("label:contains('State')").siblings("select").attr({
 				"name": "organisation-state"
 			});
 
