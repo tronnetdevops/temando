@@ -83,19 +83,19 @@
 		 */
 		"fixOntraportSuckyNaming": function(){
 			$("label:contains('Organisation - School')").siblings("input").attr({
-				"name": "organization-school"
+				"name": "organisation-school"
 			});
 
 			$("label:contains('City')").siblings("input").attr({
-				"name": "organization-city"
+				"name": "organisation-city"
 			});
 
 			$("label:contains('State')").siblings("input").attr({
-				"name": "organization-state"
+				"name": "organisation-state"
 			});
 
 			$("label:contains('Zip Code')").siblings("input").attr({
-				"name": "organization-zip"
+				"name": "organisation-zip"
 			});
 
 			return true;
