@@ -3,7 +3,7 @@
 
 	return (window.TNDOFormReplicator = {
 		"init": function(){
-			var API_URI = "api.temando.tronnet.me/ontraport.php",
+			var API_URI = "//api.temando.tronnet.me/ontraport.php",
 				$group = $("<div>"),
 				$section = $("<div><h3 class='teacher-num'>1</h3></div>").css({
 					"border-top": "1px solid rgba(0,0,0,0.6)"
@@ -65,6 +65,14 @@
 			});
 
 			$submit.before( $group );
+
+			/**
+			 * Force it.
+			 * @return {[type]} [description]
+			 */
+			$submit.click(function(){
+				document.forms[0].submit();
+			})
 
 			$form.append( $originHiddenField );
 
