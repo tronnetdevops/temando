@@ -10,7 +10,8 @@
 				}).addClass("moonray-form-element-wrapper moonray-form-input-type-text"),
 				$originHiddenField = $("<input/>").attr({
 					"name": "form-origin",
-				}).val(location.pathname.substr(1)),
+					"type": "hidden"
+				}).val( location.pathname.substr(1) ),
 				$primary = $("label:contains('First Name')").parent(),
 				$head = $primary,
 				$form = $primary.parent(),
@@ -28,8 +29,6 @@
 					"data-teacher-key": key,
 					"name": "teachers[0]["+key+"]"
 				});
-
-				console.log("Key: " + key);
 
 				$section.append( $clone );
 
