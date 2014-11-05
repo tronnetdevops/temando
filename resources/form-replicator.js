@@ -15,16 +15,17 @@
 				$clone, key;
 
 			for(var fieldsCloned=0; fieldsCloned<5; fieldsCloned++){
-				key = $head.find("label").text().replace(" ", "-").toLowerCase();
+				$clone = $head.clone();
 
-				$head.find("input").attr({
+				key = $head.find("label").text().replace(/-/gim, " ").replace(/\s+/gim, "-").toLowerCase();
+
+				$clone.find("input").attr({
+					"data-teacher-pos": 0,
+					"data-teacher-key": key,
 					"name": "teachers[0]["+key+"]"
-				}).data({
-					"teacherPos": 0,
-					"key": key
 				});
 
-				$section.append( $head.clone() );
+				$section.append( $clone );
 
 				$initialElements.push( $head );
 
@@ -39,7 +40,7 @@
 				$clone.find("input").each(function(){
 					var $this = $(this);
 
-					key = $this.data("key");
+					key = $this.data("teacherKey");
 
 					$this.attr({
 						"name": "teachers["+fieldsReplicated+"]["+key+"]"
