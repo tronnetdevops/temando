@@ -3,10 +3,15 @@
 
 	return (window.TNDOFormReplicator = {
 		"init": function(){
-			var $section = $("<section>"),
+			var $group = $("<div>"),
+				$section = $("<div><h3 class='teacher-num'>0</h3></div>").css({
+					"border-top": "1px solid rgba(0,0,0,0.6)"
+				}).addClass("moonray-form-element-wrapper moonray-form-input-type-text"),
 				$primary = $("label:contains('First Name')").parent(),
 				$head = $primary,
 				$form = $primary.parent(),
+				$submit = $form.find("input[type='submit']").parent(),
+				$initialElements = [],
 				$clone, key;
 
 			for(var fieldsCloned=0; fieldsCloned<5; fieldsCloned++){
@@ -19,10 +24,14 @@
 					"key": key
 				});
 
-				$section.append( $head.clone() );	
+				$section.append( $head.clone() );
+
+				$initialElements.push( $head );
 
 				$head = $head.next();
 			}
+
+			$group.append( $section );
 
 			for(var fieldsReplicated = 1; fieldsReplicated<10; fieldsReplicated++){
 				$clone = $section.clone();
@@ -39,8 +48,18 @@
 					});
 				});
 
-				$form.append( $clone );
+				$clone.find(".teacher-num").text( fieldsReplicated );
+
+				$group.append( $clone );
 			}
+
+			// Remove the original ones so we can replace them all in one go
+			$initialElements.map(function($ele){
+				console.log("Going to remove this guy!", $ele);
+				$ele.remove();
+			});
+
+			$submit.before( $group );
 
 			return this;
 		}
