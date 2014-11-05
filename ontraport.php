@@ -19,10 +19,19 @@
 		"KE-Original-Digital-Teacher-Registration" => "*/*78*/*"
 	);
 
-	$requiredFields = array("first-name", "last-name", "email", "office-phone", "organisation-job-title");
+	$redirectByOriginMap = array(
+		"SS-Original-Teacher-Registration" => "http://musicedu.pages.ontraport.net/SS-Teacher-Thank-You",
+		"SS-Digital-Teacher-Registration" => "http://musicedu.pages.ontraport.net/SS-Teacher-Thank-You",
+		"SS-Original-Digital-Teacher-Registration" => "http://musicedu.pages.ontraport.net/SS-Teacher-Thank-You",
+		"KE-Original-Teacher-Registration" => "http://musicedu.pages.ontraport.net/KE-Teacher-Thank-You",
+		"KE-Digital-Teacher-Registration" => "http://musicedu.pages.ontraport.net/KE-Teacher-Thank-You",
+		"KE-Original-Digital-Teacher-Registration" => "http://musicedu.pages.ontraport.net/KE-Teacher-Thank-You"
+	);
 
+	$requiredFields = array("first-name", "last-name", "email", "office-phone", "organisation-job-title");
+	$origin = $_REQUEST["form-origin"];
 	$teachers = $_REQUEST["teachers"];
-	$sequence = $sequenceByOriginMap[ $_REQUEST["form-origin"] ];
+	$sequence = $sequenceByOriginMap[ $origin ];
 
 	if (is_array($teachers) && isset($sequence)){
 		foreach($teachers as $teacher){
@@ -34,15 +43,17 @@
         <field name="Last Name">${teacher["last-name"]}</field>
         <field name="Email">${teacher["email"]}</field>
         <field name="Office Phone">${teacher["office-phone"]}</field>
-        <field name="Organisation -Job Title">${teacher["organisation-job-title"]}</field>
         <field name="Zip Code">${_REQUEST["organisation-zip"]}</field>
         <field name="City">${_REQUEST["organisation-city"]}</field>
         <field name="State">${_REQUEST["organisation-state"]}</field>
-        <field name="Organisation - School">${_REQUEST["organisation-school"]}</field>
     </Group_Tag>
     <Group_Tag name="Sequences and Tags">
         <field name="Contact Tags"></field>
         <field name="Sequences">$sequence</field>
+    </Group_Tag>
+    <Group_Tag name="MusicEDU">
+        <field name="Organisation -Job Title">${teacher["organisation-job-title"]}</field>
+        <field name="Organisation - School">${_REQUEST["organisation-school"]}</field>
     </Group_Tag>
 </contact>
 STRING;
@@ -63,9 +74,4 @@ STRING;
 		}
 	}
 
-
-	AJAX::Response("json", array(
-			"created" => $created,
-			"failed" => $failed
-		)
-	);
+	header("Location: " . $redirectByOriginMap[ $origin ]);
