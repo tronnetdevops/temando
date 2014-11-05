@@ -8,6 +8,9 @@
 				$section = $("<div><h3 class='teacher-num'>1</h3></div>").css({
 					"border-top": "1px solid rgba(0,0,0,0.6)"
 				}).addClass("moonray-form-element-wrapper moonray-form-input-type-text"),
+				$originHiddenField = $("<input/>").attr({
+					"name": "form-origin",
+				}).val(location.pathname.substr(1)),
 				$primary = $("label:contains('First Name')").parent(),
 				$head = $primary,
 				$form = $primary.parent(),
@@ -64,9 +67,11 @@
 
 			$submit.before( $group );
 
+			$form.append( $originHiddenField );
+
 			$form.attr({
 				"action": API_URI
-			})
+			});
 
 			return this;
 		}

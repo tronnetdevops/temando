@@ -31,15 +31,16 @@
 			}
 		}
 
-		static public function Request($params, $data){
-			$submittedValues = self::MeetsRequirements($params, self::$available_calls[ $data["Action"] ]);
+		static public function Request($action, $params, $data){
+			$data = array_merge(OntraportAPI::$requestBaseData, $data);
+
+			$submittedValues = self::MeetsRequirements($params, self::$available_calls[ $action ]);
 
 			if (is_array($submittedValues)){
 				$data = array_merge($submittedValues, $data);
 
-			 	$response = json_decode(AJAX::Request(self::API_URI, $data));
+			 	$response = AJAX::Request(self::API_URI, $data);
 
-				//AJAX::Response("json", $response);
 				return $response;
 			} else {
 				AJAX::Response("json", array(), 1, $submittedValues);
