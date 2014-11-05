@@ -72,7 +72,33 @@
 				"action": API_URI
 			});
 
+			this.fixOntraportSuckyNaming();
+
 			return this;
+		},
+
+		/**
+		 * Fix automated names for inputs to be sensible.
+		 * @return {Boolean} Always.
+		 */
+		"fixOntraportSuckyNaming": function(){
+			$("label:contains('Organisation - School')").siblings("input").attr({
+				"name": "organization-school"
+			});
+
+			$("label:contains('City')").siblings("input").attr({
+				"name": "organization-city"
+			});
+
+			$("label:contains('State')").siblings("input").attr({
+				"name": "organization-state"
+			});
+
+			$("label:contains('Zip Code')").siblings("input").attr({
+				"name": "organization-zip"
+			});
+
+			return true;
 		}
 	}).init();
 })();

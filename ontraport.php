@@ -7,6 +7,9 @@
 	include('./modules/AJAX.php');
 	include('./modules/OntraportAPI.php');
 
+	$failed = array();
+	$created = array();
+
 	$sequenceByOriginMap = array(
 		"SS-Original-Teacher-Registration" => "*/*16*/*",
 		"SS-Digital-Teacher-Registration" => "*/*75*/*",
@@ -19,14 +22,11 @@
 	$requiredFields = array("first-name", "last-name", "email", "office-phone", "organisation-job-title");
 
 	$teachers = $_REQUEST["teachers"];
-	$failed = 0;
-	$created = array();
 	$sequence = $sequenceByOriginMap[ $_REQUEST["form-origin"] ];
 
 	if (is_array($teachers) && isset($sequence)){
 		foreach($teachers as $teacher){
 			if (!count(array_diff(array_keys($teacher), $requiredFields))){
-				// Construct contact data in XML format
 				$data = <<<STRING
 <contact>
     <Group_Tag name="Contact Information">
@@ -51,12 +51,16 @@ STRING;
 						"return_id" => 1
 					)
 				);
-			} else {
-				error_log("Teacher:");
-				error_log(var_export($teacher, true));
 
-				error_log("Teacher didnt have all fields filled out: " . var_export(array_diff(array_keys($teacher), $requiredFields), true));
-				$failed++;
+			} else {
+				$failed[] = array_diff(array_keys($teacher), $requiredFields));
 			}
 		}
 	}
+
+
+	AJAX::Response("json", array(
+			"created" => $created,
+			"failed" => $failed
+		)
+	);
