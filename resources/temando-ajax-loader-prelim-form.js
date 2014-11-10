@@ -1,27 +1,22 @@
 ;setTimeout(function(){
 	"use strict"
 
-	console.log("HERE WE GO!");
-
-	var form = document.forms[0];
-
-	(window.temandoAjaxProxy = {
+	return (window.temandoAjaxProxy = {
 		"data": {
 			"requests": 0,
 			"requestLimit": 5,
 			"wait": 2000,
 			"buffer": 15,
 			"elements": {
-				"form": form,
-				"city": form.city || form.billing_city,
-				"state": form.state || form.billing_state,
-				"zip": form.zip || form.billing_zip,
-				"country": form.country || form.billing_country,
-				"packageType": $("label:contains('Package Type')").siblings("select").get(0),
-				"shipping": $("label:contains('Preliminary Shipping Total')").siblings("input").get(0),
+				"city": $("label:contains('Shipping City')").siblings("input").get(0),
+				"zip": $("label:contains('Shipping Zip')").siblings("input").get(0),
+				"country": $("label:contains('Shipping - Country')").siblings("select").get(0),
 				"quantity": $("label:contains('Number of Students')").siblings("input").get(0),
 				"teacherQuantity": $("label:contains('Number of Teachers')").siblings("input").get(0),
-				"courier": $("label:contains('Courier ID')").siblings("input").get(0)
+				"courier": $("label:contains('Courier ID')").siblings("input").get(0),
+				"packageType": $("label:contains('Package Type')").siblings("select").get(0),
+				"shipping": $("label:contains('Preliminary Shipping Total')").siblings("input").get(0)
+
 			}
 		},
 		"init": function(){
@@ -101,7 +96,7 @@
 				selectedType = els.packageType.options[ els.packageType.selectedIndex ],
 				type = selectedType[('innerText' in selectedType) ? 'innerText' : 'textContent'],
 				data = {
-					"country": els.country.options[ els.country.selectedIndex ].value,
+					"country": "AU",
 					"postalCode": els.zip.value,
 					"suburb": els.city.value //els.state.options[ els.state.selectedIndex ].value,
 				};

@@ -71,6 +71,7 @@
 			 * @return {[type]} [description]
 			 */
 			$submit.click(function(){
+				$(this).remove();
 				document.forms[0].submit();
 			})
 
