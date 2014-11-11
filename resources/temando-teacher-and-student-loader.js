@@ -22,7 +22,7 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:first input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val())+parseInt(els.teacherQuantity.value || 0);
+					var newTotal = parseInt($(this).val() || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});
@@ -30,7 +30,7 @@
 				var $prodTotal = $(".ussr-component-gird-cell[data-modelattr='quantity']:last input");
 
 				if ($prodTotal.length){
-					var newTotal = parseInt($(this).val())+parseInt(els.quantity.value || 0);
+					var newTotal = parseInt($(this).val() || 0);
 					$prodTotal.val( newTotal ).trigger("change")
 				}
 			});

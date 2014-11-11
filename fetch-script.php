@@ -29,7 +29,7 @@
 	$suburb = $argv[5];
 	$price = $argv[6];
 	$paid = $argv[7];
-	$shippingType = $argv[8];
+	$shippingType = "Domestic";
 	$sess_id = $argv[9];
 	$debug = $argv[10];
 
