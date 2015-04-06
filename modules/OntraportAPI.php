@@ -4,8 +4,8 @@
 		const API_URI = "http://api.ontraport.com/cdata.php";
 
 		static public $requestBaseData = array(
-			"appid" => "2_22513_YXuKWVu4O",
-			"key" => "Rzn1pGDGqON3sMB"
+			"appid" => "",
+			"key" => ""
 		);
 
 		static public $available_calls = array(
